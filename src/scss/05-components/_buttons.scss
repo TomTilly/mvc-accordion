@@ -1,0 +1,34 @@
+.btn {
+  display: inline-block;
+  padding: .75em 2.5em;
+
+  &:not(:last-of-type) {
+    margin-bottom: .6em;
+  }
+}
+
+.btn--primary {
+  background: $accent;
+  color: $text-inverse;
+  border: 2px solid $accent;
+  transition: all .2s linear;
+
+  &:hover,
+  &:focus {
+    background: darken($accent, 15%);
+    border: 2px solid darken($accent, 15%);
+  }
+}
+
+.btn--secondary {
+  border: 2px solid $text-inverse;
+  color: $text-inverse;
+  background: transparent;
+  transition: all .2s linear;
+
+  &:hover,
+  &:focus {
+    background: $text-inverse;
+    color: $text-primary;
+  }
+}

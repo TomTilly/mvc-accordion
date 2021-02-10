@@ -1,0 +1,35 @@
+@charset 'utf-8';
+
+// 1. Config files and helpers
+
+@import '01-abstracts/colors';
+@import '01-abstracts/type';
+
+// 2. Vendor
+
+@import '02-vendor/normalize';
+
+// 3. Base styles
+
+@import '03-base/base';
+@import '03-base/typography';
+
+// 4. Layout
+
+@import '04-layout/grid';
+@import '04-layout/header';
+@import '04-layout/footer';
+@import '04-layout/sidebar';
+@import '04-layout/nav';
+@import '04-layout/forms';
+
+// 5. Components
+
+@import '05-components/buttons';
+
+// 6. Pages
+
+@import '06-pages/contact';
+@import '06-pages/home';
+
+// 7. Themes (usually omitted for most sites)

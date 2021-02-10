@@ -1,0 +1,34 @@
+{
+  "name": "static-boilerplate",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "parcel serve src/html/index.html -p 3000 --open",
+    "prebuild": "rm -rf dist/*",
+    "build": "parcel build src/html/index.html"
+  },
+  "keywords": [
+    "parcel",
+    "boilerplate",
+    "static",
+    "website"
+  ],
+  "author": "Tom Tillistrand",
+  "license": "ISC",
+  "description": "Boilerplate for building static websites with Parcel",
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/eslint-parser": "^7.12.1",
+    "@babel/preset-env": "^7.11.0",
+    "autoprefixer": "^9.8.6",
+    "eslint": "^7.7.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-html": "^6.0.3",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "parcel": "^2.0.0-beta.1",
+    "posthtml-include": "^1.4.3",
+    "prettier": "^2.2.1",
+    "sass": "^1.26.10"
+  }
+}
