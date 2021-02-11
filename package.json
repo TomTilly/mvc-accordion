@@ -30,5 +30,8 @@
     "posthtml-include": "^1.4.3",
     "prettier": "^2.2.1",
     "sass": "^1.26.10"
+  },
+  "dependencies": {
+    "core-js": "^3.8.3"
   }
 }
