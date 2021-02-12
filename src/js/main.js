@@ -1,8 +1,11 @@
 class Model {
+
+  static accordionCount = 1;
+
   constructor() {
     this.panels = [
       {
-        id: 1,
+        id: `${Model.accordionCount}-0`,
         title: 'Title 1',
         body: `<p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex
@@ -25,7 +28,7 @@ class Model {
         isOpen: true,
       },
       {
-        id: 2,
+        id: `${Model.accordionCount}-1`,
         title: 'Title 2',
         body: `<p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex
@@ -43,7 +46,7 @@ class Model {
         isOpen: false,
       },
       {
-        id: 3,
+        id: `${Model.accordionCount}-2`,
         title: 'Title 3',
         body: `<h2>Subheader</h2>
         <p>
@@ -67,6 +70,8 @@ class Model {
         isOpen: false,
       },
     ];
+
+    Model.accordionCount += 1;
   }
 
   addPanel(title, body) {
@@ -75,30 +80,47 @@ class Model {
         this.panels.length > 0 ? this.panels[this.panels.length - 1].id + 1 : 1,
       title,
       body,
-      complete: false,
+      isOpen: false,
     };
     this.panels.push(panel);
+    this.onPanelStateChange(this.panels);
   }
 
   deletePanel(id) {
     this.panels = this.panels.filter((panel) => panel.id !== id);
+
+    this.onPanelStateChange(this.panels);
   }
 
   toggleOpen(id) {
-    this.panels = this.panels.map((panel) =>
-      panel.id === id ? { ...panel, isOpen: !panel.isOpen } : panel
-    );
+    if(this.checkIsOpen(id)) return; // Don't toggle if panel clicked is already open
+    this.panels = this.panels.map((panel) => {
+      if (panel.isOpen) {
+        return { ...panel, isOpen: false }; // Close currently open panel
+      } else {
+        return panel.id === id ? { ...panel, isOpen: !panel.isOpen } : panel; // Open clicked panel
+      }
+    });
+
+    this.onPanelStateChange(this.panels);
+  }
+
+  checkIsOpen(id) {
+    const panel = this.panels.find(panel => {
+      return panel.id === id;
+    });
+    return panel.isOpen;
+  }
+
+  bindPanelStateChange(callback) {
+    this.onPanelStateChange = callback;
   }
 }
 
 class View {
 
-  static accordionCount = 1;
-
   constructor() {
     this.app = this.getElement('#root');
-    this.id = View.accordionCount;
-
     this.title = this.createElement('h1');
     this.title.textContent = 'MVC Accordion';
 
@@ -106,8 +128,6 @@ class View {
     this.accordion.setAttribute('role', 'tablist');
 
     this.app.append(this.title, this.accordion);
-
-    View.accordionCount += 1;
   }
 
   createElement(tag, className) {
@@ -135,18 +155,18 @@ class View {
     } else {
       panels.forEach((panel, i) => {
         const panelContainer = this.createElement('div', 'accordion__panel');
-        const titleId = `header-${this.id}-${i}`;
-        const bodyId = `body-${this.id}-${i}`;
+        const titleId = panel.id;
+        const bodyId = `body-${panel.id}`;
         
         const panelHeader = this.createElement('header', 'accordion__panel-header');
         panelHeader.tabindex = "0";
+        panelHeader.id = titleId;
         panelHeader.setAttribute('role', 'tab');
         panelHeader.setAttribute('aria-selected', panel.isOpen.toString());
         panelHeader.setAttribute('aria-expanded', panel.isOpen.toString());
         panelHeader.setAttribute('aria-controls', bodyId);
         
         const panelTitle = this.createElement('h2', 'accordion__panel-title');
-        panelTitle.id = titleId;
         panelTitle.textContent = panel.title;
         panelHeader.append(panelTitle);
 
@@ -163,18 +183,33 @@ class View {
       });
     }
   }
+
+  bindToggleOpen(handler) {
+    this.accordion.addEventListener('click', event => {
+      if(event.target.className === 'accordion__panel-header') {
+        handler(event.target.id);
+      }
+    });
+  }
 }
 
 class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
-
-    this.onPanelToggle(this.model.panels);
+    this.onPanelChange = this.onPanelChange.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
+    this.model.bindPanelStateChange(this.onPanelChange);
+    this.view.bindToggleOpen(this.handleToggle);
+    this.onPanelChange(this.model.panels);
   }
 
-  onPanelToggle(panels) {
+  onPanelChange(panels) {
     this.view.displayPanels(panels);
+  }
+
+  handleToggle(id) {
+    this.model.toggleOpen(id);
   }
 }
 

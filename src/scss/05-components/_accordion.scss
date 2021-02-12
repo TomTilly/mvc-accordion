@@ -1,0 +1,75 @@
+.accordion {
+  background: white;
+  border-radius: 5px;
+  border: 1px solid #dfdfdf;
+  box-shadow: 0 0 5px #dfdfdf;
+}
+
+.accordion__panel:first-of-type .accordion__panel-header {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.accordion__panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #dedede;
+  padding: 1.3em 1.5em;
+  cursor: pointer;
+  transition: 0.1s background-color linear;
+}
+
+.accordion__panel-header::after {
+  content: '';
+  width: 16px;
+  height: 16px;
+  background: url('../images/down-chevron.svg');
+  transition: 0.1s transform linear;
+}
+
+.accordion__panel-header[aria-selected='true']::after {
+  transform: rotate(180deg);
+}
+
+.accordion__panel:not(:last-child) .accordion__panel-header {
+  border-bottom: 1px solid #dedede;
+}
+
+.accordion__panel-header:hover,
+.accordion__panel-header:focus {
+  background-color: #f1f1f1;
+}
+
+.accordion__panel-header:focus {
+  outline: 2px dashed #ababab;
+}
+
+.accordion__panel-header[aria-selected='true'] {
+  background-color: #f1f1fe;
+}
+
+.accordion__panel-title {
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #65656a;
+}
+
+.accordion__panel-body {
+  overflow: hidden;
+  padding: 1.3em 1.5em;
+
+}
+
+.accordion__panel:not(:last-child) .accordion__panel-body {
+  border-bottom: 1px solid #dedede;
+}
+
+.accordion__panel-body > * {
+  margin-top: 0;
+}
+
+.accordion__panel-body > *:last-child {
+  margin-bottom: 0;
+}
